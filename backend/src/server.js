@@ -1,28 +1,59 @@
+// import express from "express";
+// import path from "path"
+// import{ENV} from "./lib/env.js"
+
+// const app = express();
+
+// const __dirname = path.resolve();
+
+
+// app.get("/books", (req,res) =>{
+//     res.status(200).json({msg: "api is runnning and book endpoint"});
+// });
+
+
+// app.get("/health", (req,res) =>{
+//     res.status(200).json({msg: "api is runnning and success"});
+// });
+// // make our app ready for deployement
+// if(ENV.NODE_ENV === "production"){
+//     app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+
+// app.get("/{*any}", (req,res) =>{
+//     res.sendFile(path.join(__dirname,"../frontend", "dist","index.html"));
+// });
+// }
+
+// app.listen(ENV.PORT, ()=> console.log("Server is running on port:", ENV.PORT));
+
+
 import express from "express";
-import path from "path"
-import{ENV} from "./lib/env.js"
+import path from "path";
+import { ENV } from "./lib/env.js";
 
 const app = express();
-
 const __dirname = path.resolve();
 
-
-app.get("/books", (req,res) =>{
-    res.status(200).json({msg: "api is runnning and book endpoint"});
+app.get("/books", (req, res) => {
+  res.status(200).json({ msg: "api is running and book endpoint" });
 });
 
-
-app.get("/health", (req,res) =>{
-    res.status(200).json({msg: "api is runnning and success"});
+app.get("/health", (req, res) => {
+  res.status(200).json({ msg: "api is running and success" });
 });
-// make our app ready for deployement
-if(ENV.NODE_ENV === "production"){
-    app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
+// Production setup
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-app.get("/{*any}", (req,res) =>{
-    res.sendFile(path.join(__dirname,"../frontend", "dist","index.html"));
-});
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
 }
 
-app.listen(ENV.PORT, ()=> console.log("Server is running on port:", ENV.PORT));
+const PORT = process.env.PORT || ENV.PORT || 5000;
+
+app.listen(PORT, () =>
+  console.log("Server is running on port:", PORT)
+);
