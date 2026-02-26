@@ -14,7 +14,6 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "interview-platform": "file:..",
     "mongoose": "^8.19.1"
   },
   "devDependencies": {
