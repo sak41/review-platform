@@ -4,7 +4,7 @@ import User from "../models/User.js";
 
 export const inngest = new Inngest({ id: "review-platform" });
 
-const syncUser = innngest.createFunction(
+const syncUser = inngest.createFunction(
     {id:"sync-user"},
     {event:"clerk/user.created"},
     async({event}) => {
@@ -25,7 +25,7 @@ const syncUser = innngest.createFunction(
     }
 )
 
-const deleteUserFromDB = innngest.createFunction(
+const deleteUserFromDB = inngest.createFunction(
     {id:"delte-user-from-db"},
     {event:"clerk/user.deleted"},
     async({event}) => {
