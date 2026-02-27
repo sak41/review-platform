@@ -115,7 +115,15 @@ export async function joinSession(req,res){
 
           if(!session) return res.status(404).json({message: "Session not found"});
 
-          if(session.participant) return res.status(404).json({message:"Session is full"});
+          if(session.status !== "active") {
+            return res.status(400).json({message: "cannot join a completed session" });
+          }
+
+          if(session.host.toString() === userId.toString()){
+            return res.status(400).json({message:"host cannot be a participant of their own sesssion"});
+          }
+
+          if(session.participant) return res.status(409).json({message:"Session is full"});//check if session is alreadt full
 
           session.participant=userId
           await session.save()
@@ -146,10 +154,7 @@ export async function endSession(req,res){
                 return res.status(403).json({message:"only the host can end the session"})
             }
 
-            //check if session already completed
-            if(session.status==="completed"){
-                return res.status(403).json({message:"session is already comepleted"});
-            }
+            
 
             session.status = "completed"
             await session.save();
@@ -162,6 +167,11 @@ export async function endSession(req,res){
 
             const channel=chatClient.channel("messaging",session.callId);
             await channel.delete();
+
+            //check if session already completed
+            if(session.status==="completed"){
+                return res.status(403).json({message:"session is already comepleted"});
+            }
 
             res.status(200).json({session , message: "session ended successfully"});
 
