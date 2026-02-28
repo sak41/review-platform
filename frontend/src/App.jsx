@@ -1,26 +1,32 @@
 
-import './App.css'
-import { SignedIn, SignedOut, SignInButton, SignOutButton, UserButton } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, SignInButton, SignOutButton, UserButton, useUser } from '@clerk/clerk-react';
+import { Navigate, Route, Routes } from 'react-router';
+import HomePage from './pages/HomePage';
+import ProblemsPage from './pages/ProblemsPage';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
+
+  const {isSignedIn , isLoaded} =useUser()
+
+  if(!isLoaded) return null;
   return (
     <>
-    <h1>Welcome</h1>
-     <SignedOut>
-    <SignInButton mode="modal"> 
-      
-    </SignInButton>
-    </SignedOut>
+    <Routes>
 
-    <SignedIn>
-     <SignOutButton />
-    </SignedIn>
+      <Route path= "/" element={!isSignedIn ? <HomePage/>: <Navigate to={"dashboard"}/>}/>
+        <Route path= "/dashboard" element={ isSignedIn ? <DashboardPage/>: <Navigate to={"/"}/>}/>
+      <Route path= "/problems" element={ isSignedIn ? <ProblemsPage/> : <Navigate to={"/"}/>}/>
 
-    <SignedIn>
-    <UserButton />
-     </SignedIn>
+
+
+       </Routes>
        </>
   );
 }
 
 export default App
+
+
+// tw,dausy,react-router,react-toast
+//react-query,axios
