@@ -1,8 +1,18 @@
-import axios from "axios"
+
+
+
+
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_API_URL;
+
+if (!baseURL) {
+    throw new Error("VITE_API_URL is not defined");
+}
 
 const axiosInstance = axios.create({
-    baseURL:import.meta.env.VITE_API_URL,
-    withCredentials:true // browser will send the cookies to the browser automatically on every req
-})
+    baseURL,
+    withCredentials: true,
+});
 
 export default axiosInstance;
