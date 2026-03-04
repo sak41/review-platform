@@ -6,7 +6,10 @@ export const useCreateSession = () => {
     const result = useMutation({
         mutationKey: ["createSession"],
         mutationFn: sessionApi.createSession,
-        onSuccess: () => toast.success("Session created successfully!"),
+        onSuccess: (data) => {
+            console.log("SESSION RESPONSE:", data);
+            toast.success("Session created successfully!");
+        },
         onError: (error) => toast.error(error.response?.data?.message || "Failed to create room"),
     });
 
