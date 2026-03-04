@@ -54,6 +54,9 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/execute", executeRoute);
 
+app.get("/", (req, res) => {
+  res.json({ message: "API running" });
+});
 
 app.get("/health", (req, res) => {
   res.status(200).json({ msg: "api is running and success" });
